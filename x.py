@@ -23,18 +23,18 @@ def _is_item_name(text=None, language="en"):
   }
   if not text: return None, errors[language]
   if len(text) < min or len(text) > max : return None, errors[language]
-  if " " in text : return None, errors[language]
+  # if " " in text : return None, errors[language]
   text = text.strip().capitalize()
   return text, None
 
 ##############################
 def _is_item_price(text=None, language="en"):
   errors = {
-    "en":f"item_price must be a number with two decials divided by a comma and cannot start with zero", 
-    "dk":f"item_price skal være et tal med to decialer divideret med et komma og må ikke starte med nul"
+    "en":f"item_price must be a number with two decimals divided by a comma, cannot start with zero, and must be between double quotes", 
+    "dk":f"item_price skal være et tal med to decimaler divideret med et komma, må ikke starte med nul, og skal stå mellem dobbelte anførselstegn"
   }
   if not text : return None, errors[language]
-  if not re.match("^[1-9][0-9]*[.][0-9]{2}$", text) : return None, errors[language]
+  if not re.match("^[1-9][0-9]*[.][0-9]{2}$", str(text)) : return None, errors[language]
   return text, None
 
 ##############################

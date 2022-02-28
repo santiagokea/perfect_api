@@ -1,6 +1,7 @@
 from bottle import put, request
 import x
 import time
+from datetime import datetime
 
 ##############################
 @put("/items/<item_id>")
@@ -40,11 +41,14 @@ def _(language="en", item_id=""):
     if error : return x._response(400, error)
     # Update the field
     item["item_updated_at"] = str(int(time.time()))
+    now = datetime.now()
+    item["item_updated_at_date"] = now.strftime("%Y-%B-%d-%A %H:%M:%S")
     # Save the item with its updated values
     counter = db.execute("""UPDATE items 
                   SET item_id=:item_id, item_name=:item_name, 
                   item_price=:item_price, item_created_at=:item_created_at, 
-                  item_created_at_date=:item_created_at_date, item_updated_at =:item_updated_at  
+                  item_created_at_date=:item_created_at_date, item_updated_at =:item_updated_at,
+                  item_updated_at_date = :item_updated_at_date 
                   WHERE item_id = :item_id""", item).rowcount
     db.commit()
     if not counter : return x._response(204, "")
